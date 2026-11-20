@@ -69,17 +69,17 @@ Notes and limits:
   sources, then the sources are swapped to the frozen snapshot and every
   toolchain package (gcc/g++/lld/-dev libs) installs from it. ca-certificates
   is transport-only (never linked into the build) and SDL2 is sha256-checked,
-  so the one unpinned package cannot affect reproducibility of the binary.
+  This bootstrap and its dependencies are not pinned, so a fully frozen
+  build environment is not yet guaranteed.
 - glibc of the base image (2.31) is the oldest the device runtime supports;
   the binary's max required symbol is checked and recorded (target ≈ 2.29).
 - The zip produced by `package.sh` is deterministic (fixed member order and
   timestamps via `SOURCE_DATE_EPOCH`, default 2000-01-01) — the same pak
   always zips to the identical archive.
-- The MAME binary itself embeds its build date, so a rebuild is not
-  bit-identical — it is *input-identical*: same sources, patches, compiler
-  and flags, recorded via `BUILD-INFO.txt`.
-- `APT_USE_SNAPSHOT=0 ./build.sh` builds against the live archive instead of
-  the frozen snapshot (fallback if snapshot.ubuntu.com is unavailable).
+- Bit-for-bit reproducibility of the MAME binary has not been verified with
+  a second clean build. The generated build record helps compare builds.
+- To reuse the existing source tree, run `./build.sh --no-clone`; for a
+  fresh clone, move `out/mame_src` aside first.
 
 ## Build details
 

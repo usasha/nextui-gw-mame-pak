@@ -48,9 +48,12 @@ build_image() {
 clone_mame() {
     if [ -d "${MAME_SRC}/.git" ] && [ "${REUSE_SRC}" = "1" ]; then
         log "Reusing MAME source at ${MAME_SRC}"
+    elif [ -e "${MAME_SRC}" ]; then
+        err "Source directory already exists: ${MAME_SRC}"
+        err "Use --no-clone to reuse it, or move it aside for a clean build."
+        exit 1
     else
         log "Cloning MAME at tag ${MAME_TAG} (shallow)..."
-        rm -rf "${MAME_SRC}"
         git clone --depth 1 --branch "${MAME_TAG}" "${MAME_REPO}" "${MAME_SRC}"
     fi
     local actual
@@ -260,10 +263,7 @@ fi
 clone_mame
 apply_patches
 
-if [ -f "${OUT_DIR}/mame" ] && [ ! -f "${MAME_SRC}/mame" ]; then
-    log "out/mame exists but the source tree was cleaned — collecting fresh artifacts"
-    collect_artifacts
-elif [ -f "${OUT_DIR}/mame" ] && [ "${FORCE}" = "0" ]; then
+if [ -f "${OUT_DIR}/mame" ] && [ -f "${MAME_SRC}/mame" ] && [ "${FORCE}" = "0" ]; then
     log "out/mame exists — skipping compile (--force to rebuild)"
 else
     build_mame
