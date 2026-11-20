@@ -20,7 +20,7 @@
 # =============================================================================
 set -eu
 
-DEVICE_IP="${DEVICE_IP:-192.168.1.106}"
+DEVICE_IP="${DEVICE_IP:-192.168.1.107}"
 DEVICE_USER="${DEVICE_USER:-root}"
 DEVICE_PASS="${DEVICE_PASS:-tina}"
 

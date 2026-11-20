@@ -16,7 +16,7 @@ a minimal, fully pinned, build-from-scratch project.
 ./package.sh    # assemble + out/dist/GW_MAME.pakz (distributable zip)
 ```
 
-Deploy defaults to `root@192.168.1.106` (password `tina`); override with
+Deploy defaults to `root@192.168.1.107` (password `tina`); override with
 `DEVICE_IP=…` (also `DEVICE_USER`, `DEVICE_PASS`).
 
 Then on the device: copy your MAME Game & Watch romset zips
