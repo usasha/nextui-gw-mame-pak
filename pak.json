@@ -2,7 +2,7 @@
   "name": "GW_MAME",
   "version": "v0.1.0",
   "type": "EMU",
-  "description": "Native standalone MAME 0.223 for Game & Watch on TrimUI Brick / Smart Pro (NextUI). G&W-only build with performance patches; requires your own MAME romset zips in Roms/Game & Watch MAME (GW_MAME)/.",
+  "description": "Native standalone MAME 0.223 for Game & Watch on TrimUI Brick / Smart Pro (NextUI). G&W-only build with performance patches; requires your own MAME romset zips in Roms/Game & Watch MAME (GW_MAME)/ and matching artwork zips in .userdata/tg5040/mame/artwork/.",
   "author": "alex",
   "repo_url": "https://github.com/alex/brick_gw",
   "release_filename": "GW_MAME.pakz",

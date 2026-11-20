@@ -20,8 +20,9 @@ Deploy defaults to `root@192.168.1.107` (password `tina`); override with
 `DEVICE_IP=…` (also `DEVICE_USER`, `DEVICE_PASS`).
 
 Then on the device: copy your MAME Game & Watch romset zips
-(`gnw_ball.zip`, …) into `Roms/Game & Watch MAME (GW_MAME)/` and launch the
-"Game & Watch MAME" system in NextUI.
+(`gnw_ball.zip`, …) into `Roms/Game & Watch MAME (GW_MAME)/` and the
+matching artwork zips into `.userdata/tg5040/mame/artwork/` (both are
+required user inputs), then launch the "Game & Watch MAME" system in NextUI.
 
 ## Repo layout
 
@@ -32,7 +33,8 @@ Dockerfile      build env: digest-pinned ubuntu:20.04 (arm64), snapshot apt,
 build.sh        docker image + shallow MAME clone (commit-verified) + patches
                 + subset compile + artifact collection + out/BUILD-INFO.txt
 assemble.sh     out/ + pak/ → out/GW_MAME.pak (staging step)
-deploy.sh       assemble + tar-over-ssh upload (+ optional artwork)
+deploy.sh       assemble + tar-over-ssh upload (+ artwork, required by the
+                emulator)
 package.sh      assemble + deterministic GW_MAME.pakz + sha256
 patches/        the two MAME performance patches (idempotent, fail-hard)
 pak/            payload shipped inside the .pak:
@@ -41,7 +43,8 @@ pak/            payload shipped inside the .pak:
                   README.md   user-facing notes
                   LICENSE     GPL-2.0 (MAME redistribution)
 pak.json        NextUI Pak Store metadata (for the eventual store release)
-artwork/        optional case-artwork zips (gitignored; deploy-only)
+artwork/        case-artwork zips, required by the emulator (gitignored;
+                deploy-only)
 out/            all artifacts (gitignored): mame_src/, mame, lib/,
                 GW_MAME.pak/, dist/, build.log, BUILD-INFO.txt
 ```

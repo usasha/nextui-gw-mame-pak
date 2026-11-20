@@ -11,7 +11,9 @@ Not a libretro core — no NextUI resume/quicksave integration (quit with X).
    install via the NextUI **Pak Store**.
 2. Put your MAME Game & Watch romset zips in
    `Roms/Game & Watch MAME (GW_MAME)/` (e.g. `gnw_ball.zip`, `gnw_mariocm.zip`).
-3. Reinsert the SD card; "Game & Watch MAME" appears in the system list.
+3. Put the matching MAME artwork zips (same `gnw_*.zip` names) into
+   `.userdata/tg5040/mame/artwork/` — the emulator needs them.
+4. Reinsert the SD card; "Game & Watch MAME" appears in the system list.
 
 ## Workarounds and caveats
 
@@ -38,10 +40,11 @@ In the MAME menu: D-pad navigates, A confirms, X goes back / quits.
 Settings changed in the MAME menu are stored in this pak's `cfg/` and reset
 when the pak is updated or reinstalled.
 
-## Optional case artwork
+## Artwork (required, just like the ROMs)
 
-The pak ships without artwork. If you want the full-console view (much slower
-than the default Internal LCD view), drop MAME artwork zips
-(`gnw_ball.zip`, ...) into `.userdata/tg5040/mame/artwork/` on the SD card.
-Both the artwork and this pak are built on MAME resources — see the project
-repo for build details and licensing.
+This pak ships without ROMs and without artwork — you provide both.
+Drop the MAME artwork zips
+(`gnw_ball.zip`, ...) into `.userdata/tg5040/mame/artwork/` on the SD card,
+using the same file names as the ROM zips. Both the artwork and this pak are
+built on MAME resources — see the project repo for build details and
+licensing.
