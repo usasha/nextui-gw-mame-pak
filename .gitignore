@@ -1,0 +1,9 @@
+# Build & packaging work areas (artifacts, mame source clone, docker logs)
+out/
+
+# Optional case artwork zips — big binaries, deployed to the device only
+artwork/*.zip
+
+# OS / IDE
+.DS_Store
+.idea/
