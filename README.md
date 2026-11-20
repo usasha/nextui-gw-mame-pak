@@ -64,6 +64,12 @@ hashes are recorded in `out/BUILD-INFO.txt` after every build.
 
 Notes and limits:
 
+- apt-over-https needs a CA bundle, but the bare base image ships none:
+  `ca-certificates` is bootstrapped from the base image's stock http
+  sources, then the sources are swapped to the frozen snapshot and every
+  toolchain package (gcc/g++/lld/-dev libs) installs from it. ca-certificates
+  is transport-only (never linked into the build) and SDL2 is sha256-checked,
+  so the one unpinned package cannot affect reproducibility of the binary.
 - glibc of the base image (2.31) is the oldest the device runtime supports;
   the binary's max required symbol is checked and recorded (target ≈ 2.29).
 - The zip produced by `package.sh` is deterministic (fixed member order and
