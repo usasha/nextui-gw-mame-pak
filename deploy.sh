@@ -10,8 +10,8 @@
 #   Roms/Game & Watch MAME (GW_MAME)/    ROM folder (created so the system
 #                                        shows up in NextUI — copy your MAME
 #                                        romset zips there)
-#   .userdata/tg5040/mame/artwork/       case artwork zips (required by the
-#                                        (artwork/*.zip, if present)
+#   Roms/.../.artwork/                   case artwork zips (required by the
+#                                        emulator; artwork/*.zip if present)
 #
 # cfg files ship inside the pak; nothing is seeded into .userdata.
 # ROM zips themselves are never deployed — add them on the device.
@@ -36,7 +36,7 @@ DEVICE_SDCARD="/mnt/SDCARD"
 DEVICE_EMUS="${DEVICE_SDCARD}/Emus/${PLATFORM}"
 DEVICE_PAK="${DEVICE_EMUS}/${PAK_TAG}.pak"
 DEVICE_ROMS="${DEVICE_SDCARD}/Roms/${ROM_FOLDER}"
-DEVICE_ARTWORK="${DEVICE_SDCARD}/.userdata/${PLATFORM}/mame/artwork"
+DEVICE_ARTWORK="${DEVICE_ROMS}/.artwork"
 
 # Device SSH is slow (dropbear) — generous connect timeout
 SSH_OPTS="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=40"
@@ -71,8 +71,8 @@ ${SSH} "mkdir -p '${DEVICE_ROMS}'"
 
 # --- Artwork (required by the emulator) ------------------------------------------------
 if ls "${ARTWORK_SRC}"/*.zip > /dev/null 2>&1; then
-    log "Uploading artwork zips..."
-    ${SSH} "mkdir -p '${DEVICE_ARTWORK}'"
+    log "Uploading artwork zips to ${DEVICE_ARTWORK}..."
+    ${SSH} "rm -rf '${DEVICE_ARTWORK}' && mkdir -p '${DEVICE_ARTWORK}'"
     tar --exclude='._*' --exclude='.DS_Store' -C "${ARTWORK_SRC}" -cf - . \
         | ${SSH} "tar -C '${DEVICE_ARTWORK}' -xf -"
 else

@@ -7,6 +7,10 @@
 #   Emus/tg5040/GW_MAME.pak/             the pak (assemble.sh)
 #   Roms/Game & Watch MAME (GW_MAME)/    empty ROM folder entry so the system
 #                                        appears in NextUI right after install
+#   Roms/.../.artwork/                    empty hidden artwork folder (created
+#                                        so users just drop artwork zips in;
+#                                        dot-prefixed => invisible in the
+#                                        NextUI game list)
 #
 # The zip is deterministic: fixed member order and timestamps
 # (SOURCE_DATE_EPOCH, default 2000-01-01), unix exec bits preserved. Reziping
@@ -74,6 +78,10 @@ with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED, compresslevel=6) as zf
             zf.writestr(zi, f.read())
     # empty ROM folder entry (directory bit, so unzip recreates it)
     zi = zipfile.ZipInfo(rom_rel + "/", date_time=dt)
+    zi.external_attr = (0o755 << 16) | 0x10
+    zf.writestr(zi, b"")
+    # empty hidden artwork folder inside the ROM folder (same dir entry)
+    zi = zipfile.ZipInfo(rom_rel + "/.artwork/", date_time=dt)
     zi.external_attr = (0o755 << 16) | 0x10
     zf.writestr(zi, b"")
 EOF

@@ -21,8 +21,9 @@ Deploy defaults to `root@192.168.1.107` (password `tina`); override with
 
 Then on the device: copy your MAME Game & Watch romset zips
 (`gnw_ball.zip`, …) into `Roms/Game & Watch MAME (GW_MAME)/` and the
-matching artwork zips into `.userdata/tg5040/mame/artwork/` (both are
-required user inputs), then launch the "Game & Watch MAME" system in NextUI.
+matching artwork zips into `Roms/Game & Watch MAME (GW_MAME)/.artwork/`
+(hidden folder; both are required user inputs), then launch the
+"Game & Watch MAME" system in NextUI.
 
 ## Repo layout
 
@@ -133,7 +134,9 @@ name):
 
 - `LD_LIBRARY_PATH=/usr/trimui/lib:<pak>/lib` (device SDL2 wins),
   `SDL_VIDEODRIVER=mali`, `SDL_AUDIODRIVER=alsa`
-- `HOME=$USERDATA_PATH/mame` (nvram etc.), artwork dir kept there
+- `HOME=$USERDATA_PATH/mame` (nvram etc.), artwork read from the hidden
+  `.artwork/` subfolder of the system's ROM folder (created by the pakz
+  install; invisible in the NextUI game list)
 - MAME `cfg_directory` → the pak's own `cfg/`; menu changes reset on pak
   update (deliberate)
 - `-video accel -view Internal -sound sdl -skip_gameinfo -autosave -sleep
@@ -164,7 +167,9 @@ button → SDL order: `0=B 1=A 2=Y 3=X 6=Select 7=Start`.
 - `Emus/tg5040/GW_MAME.pak/` — `mame`, `lib/libSDL2-2.0.so.0`, `launch.sh`,
   `cfg/`, `README.md`, `LICENSE` (GPL-2.0; MAME redistribution terms).
 - `out/dist/GW_MAME.pakz` + `.sha256` — zip slice of the SD card root
-  (`Emus/…` + empty `Roms/Game & Watch MAME (GW_MAME)/`); deterministic.
+  (`Emus/…` + empty `Roms/Game & Watch MAME (GW_MAME)/` + its empty hidden
+  `.artwork/`); deterministic. The Pak Store installs `.pakz` archives
+  as-is (unzip to the SD card root).
 - `pak.json` — Pak Store metadata; store submission is a deliberate later
   step (this iteration stops at the ready-to-submit artifacts).
 

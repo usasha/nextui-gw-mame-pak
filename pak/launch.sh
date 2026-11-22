@@ -16,7 +16,9 @@
 EMU_TAG=$(basename "$(dirname "$0")" .pak)
 PAK_DIR=$(dirname "$0")
 ROM="$1"
+ROM_DIR=$(dirname "$ROM")
 GAME=$(basename "$ROM" .zip)
+ARTWORK_DIR="$ROM_DIR/.artwork"
 
 # Bundled libs (SDL2_ttf/fontconfig chain) + the device's own SDL2 from the
 # stock firmware (/usr/trimui/lib) which has the "mali" fbdev video driver.
@@ -25,12 +27,14 @@ export LD_LIBRARY_PATH="/usr/trimui/lib:$PAK_DIR/lib:$LD_LIBRARY_PATH"
 export SDL_VIDEODRIVER=mali
 export SDL_AUDIODRIVER=alsa
 
-# MAME HOME + per-user data on the SD card (nvram, artwork). The cfg files
+# MAME HOME + per-user data on the SD card (nvram). The cfg files
 # (control scheme + view presets) ship INSIDE the pak under cfg/ - no seeding
 # into userdata; a pak update restores factory settings.
+# Artwork lives next to the roms, in the hidden ".artwork" subfolder of the
+# system's ROM folder (created by the .pakz install) - invisible in NextUI's
+# game list (dot-prefixed), one location for everything game-related.
 export HOME="$USERDATA_PATH/mame"
 mkdir -p "$HOME"
-mkdir -p "$USERDATA_PATH/mame/artwork"
 
 # Restore NextUI brightness/volume around the standalone binary
 if [ -f "$SDCARD_PATH/.system/$PLATFORM/bin/syncsettings.elf" ]; then
@@ -48,7 +52,7 @@ fi
 # INPDEBUG event logging (see input_sdl.cpp) shows what MAME receives.
 if [ -f "$USERDATA_PATH/mame/inputtest" ]; then
     ./mame "$GAME" \
-        -rompath "$(dirname "$ROM")" \
+        -rompath "$ROM_DIR" \
         -artpath /nonexistent \
         -cfg_directory "$PAK_DIR/cfg" \
         -video accel \
@@ -61,8 +65,8 @@ if [ -f "$USERDATA_PATH/mame/inputtest" ]; then
 fi
 
 ./mame "$GAME" \
-    -rompath "$(dirname "$ROM")" \
-    -artpath "$USERDATA_PATH/mame/artwork" \
+    -rompath "$ROM_DIR" \
+    -artpath "$ARTWORK_DIR" \
     -cfg_directory "$PAK_DIR/cfg" \
     -video accel \
     -view Internal \

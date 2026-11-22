@@ -7,13 +7,18 @@ Not a libretro core — no NextUI resume/quicksave integration (quit with X).
 ## Install
 
 1. Copy/extract the `.pakz` at the root of your SD card (creates
-   `Emus/tg5040/GW_MAME.pak/` and `Roms/Game & Watch MAME (GW_MAME)/`), or
-   install via the NextUI **Pak Store**.
+   `Emus/tg5040/GW_MAME.pak/`, the system folder
+   `Roms/Game & Watch MAME (GW_MAME)/` and its hidden `.artwork/`
+   subfolder), or install via the NextUI **Pak Store**.
 2. Put your MAME Game & Watch romset zips in
    `Roms/Game & Watch MAME (GW_MAME)/` (e.g. `gnw_ball.zip`, `gnw_mariocm.zip`).
 3. Put the matching MAME artwork zips (same `gnw_*.zip` names) into
-   `.userdata/tg5040/mame/artwork/` — the emulator needs them.
-4. Reinsert the SD card; "Game & Watch MAME" appears in the system list.
+   `Roms/Game & Watch MAME (GW_MAME)/.artwork/` — the emulator needs them.
+   `.artwork` is a hidden folder: invisible in the NextUI game list (to keep
+   the list clean), shown like any folder on Windows; on macOS press
+   `Cmd+Shift+.` in Finder to reveal it.
+4. Reinsert the SD card; "Game & Watch MAME" appears once at least one rom
+   is in the folder.
 
 ## Workarounds and caveats
 
@@ -43,8 +48,8 @@ when the pak is updated or reinstalled.
 ## Artwork (required, just like the ROMs)
 
 This pak ships without ROMs and without artwork — you provide both.
-Drop the MAME artwork zips
-(`gnw_ball.zip`, ...) into `.userdata/tg5040/mame/artwork/` on the SD card,
+Drop the MAME artwork zips (`gnw_ball.zip`, ...) into the `.artwork/` folder
+inside the system folder (`Roms/Game & Watch MAME (GW_MAME)/.artwork/`),
 using the same file names as the ROM zips. Both the artwork and this pak are
 built on MAME resources — see the project repo for build details and
 licensing.
