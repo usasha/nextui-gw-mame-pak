@@ -64,12 +64,16 @@ if [ -f "$USERDATA_PATH/mame/inputtest" ]; then
     exit 0
 fi
 
+# Screen view: default to the flat "Background Only (No Shadow)" layout.
+# Per-game cfgs (saved from the MAME menu) beat this flag, and games whose
+# artwork names the view differently silently fall back to their own
+# default view (verified on device).
 ./mame "$GAME" \
     -rompath "$ROM_DIR" \
     -artpath "$ARTWORK_DIR" \
     -cfg_directory "$PAK_DIR/cfg" \
     -video accel \
-    -view Internal \
+    -view "Background Only (No Shadow)" \
     -sound sdl \
     -skip_gameinfo \
     -autosave \

@@ -139,8 +139,11 @@ name):
   install; invisible in the NextUI game list)
 - MAME `cfg_directory` → the pak's own `cfg/`; menu changes reset on pak
   update (deliberate)
-- `-video accel -view Internal -sound sdl -skip_gameinfo -autosave -sleep
-  -frameskip 4`; log → `$LOGS_PATH/GW_MAME.txt` (`.userdata/tg5040/logs/`)
+- `-video accel -view "Background Only (No Shadow)" -sound sdl …` — default
+  view pinned via a CLI flag; per-game cfgs (MAME menu saves) beat it, and
+  games whose artwork names the view differently silently fall back to
+  their own default view; log →
+  `$LOGS_PATH/GW_MAME.txt` (`.userdata/tg5040/logs/`)
 - brightness/volume restored via `syncsettings.elf`
 - dev modes (both opt-in by marker files, unchanged from the previous
   iteration): `$USERDATA_PATH/mame/bench_seconds` → timed headless run
