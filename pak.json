@@ -1,12 +1,13 @@
 {
   "name": "GW_MAME",
-  "version": "v0.1.0",
+  "version": "v0.2.0",
   "type": "EMU",
-  "description": "Native standalone MAME 0.223 for Game & Watch on TrimUI Brick / Smart Pro (NextUI). G&W-only build with performance patches; requires your own MAME romset zips in Roms/Game & Watch MAME (GW_MAME)/ and matching artwork zips in its .artwork/ subfolder.",
+  "description": "Native standalone MAME 0.223 for Game & Watch on TrimUI Brick / Smart Pro (NextUI). G&W-only build with performance patches; bundled 56-game NextUI menu artwork (.media) and readable display names (map.txt). Requires your own MAME romset zips in Roms/Game & Watch MAME (GW_MAME)/ and matching MAME case-artwork zips in its .artwork/ subfolder.",
   "author": "alex",
   "repo_url": "https://github.com/usasha/nextui-gw-mame-pak",
   "release_filename": "GW_MAME.pakz",
   "changelog": {
+    "v0.2.0": "Bundle 56 NextUI menu covers (.media) and map.txt display names; keep MAME case artwork user-supplied",
     "v0.1.0": "Initial release: native G&W MAME for NextUI, controls cfg + Internal view presets shipped in the pak"
   },
   "screenshots": [],

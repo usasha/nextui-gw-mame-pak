@@ -21,9 +21,13 @@ Deploy defaults to `root@192.168.1.107` (password `tina`); override with
 
 Then on the device: copy your MAME Game & Watch romset zips
 (`gnw_ball.zip`, …) into `Roms/Game & Watch MAME (GW_MAME)/` and the
-matching artwork zips into `Roms/Game & Watch MAME (GW_MAME)/.artwork/`
+matching MAME case-artwork zips into `Roms/Game & Watch MAME (GW_MAME)/.artwork/`
 (hidden folder; both are required user inputs), then launch the
 "Game & Watch MAME" system in NextUI.
+
+The `.pakz` also installs 56 NextUI menu covers into the hidden `.media/`
+folder and a `map.txt` with readable display names; both are generated from
+the files in `media/` and `roms/`.
 
 ## Repo layout
 
@@ -34,8 +38,8 @@ Dockerfile      build env: digest-pinned ubuntu:20.04 (arm64), snapshot apt,
 build.sh        docker image + shallow MAME clone (commit-verified) + patches
                 + subset compile + artifact collection + out/BUILD-INFO.txt
 assemble.sh     out/ + pak/ → out/GW_MAME.pak (staging step)
-deploy.sh       assemble + tar-over-ssh upload (+ artwork, required by the
-                emulator)
+deploy.sh       assemble + tar-over-ssh upload (pak, bundled menu art,
+                map.txt, optional MAME artwork zips)
 package.sh      assemble + deterministic GW_MAME.pakz + sha256
 patches/        the two MAME performance patches (idempotent, fail-hard)
 pak/            payload shipped inside the .pak:
@@ -43,8 +47,10 @@ pak/            payload shipped inside the .pak:
                   cfg/        control scheme (MAME cfg_directory → here)
                   README.md   user-facing notes
                   LICENSE     GPL-2.0 (MAME redistribution)
+media/          56 NextUI menu covers (300 px, padded) + attribution notes
+roms/map.txt    display-name aliases for the gnw_*.zip ROMs
 pak.json        NextUI Pak Store metadata (for the eventual store release)
-artwork/        case-artwork zips, required by the emulator (gitignored;
+artwork/        MAME case-artwork zips, required by the emulator (gitignored;
                 deploy-only)
 out/            all artifacts (gitignored): mame_src/, mame, lib/,
                 GW_MAME.pak/, dist/, build.log, BUILD-INFO.txt
@@ -169,12 +175,25 @@ button → SDL order: `0=B 1=A 2=Y 3=X 6=Select 7=Start`.
 
 - `Emus/tg5040/GW_MAME.pak/` — `mame`, `lib/libSDL2-2.0.so.0`, `launch.sh`,
   `cfg/`, `README.md`, `LICENSE` (GPL-2.0; MAME redistribution terms).
-- `out/dist/GW_MAME.pakz` + `.sha256` — zip slice of the SD card root
-  (`Emus/…` + empty `Roms/Game & Watch MAME (GW_MAME)/` + its empty hidden
-  `.artwork/`); deterministic. The Pak Store installs `.pakz` archives
-  as-is (unzip to the SD card root).
+- `out/dist/GW_MAME.pakz` + `.sha256` — zip slice of the SD card root:
+  `Emus/…`, `Roms/Game & Watch MAME (GW_MAME)/` with the bundled `.media/`
+  menu covers (56 PNGs) and `map.txt` display names, plus the empty hidden
+  `.artwork/` folder for user-supplied MAME case art. Deterministic; the Pak
+  Store installs `.pakz` archives as-is (unzip to the SD card root).
 - `pak.json` — Pak Store metadata; store submission is a deliberate later
   step (this iteration stops at the ready-to-submit artifacts).
+
+## Credits
+
+The bundled menu covers are based on the **"Nintendo Game & Watch Screenshot
+Game Play Pack"** by **ci2own** (2023), published on LaunchBox Community
+Forums and EmuMovies; see [`CREDITS.md`](CREDITS.md) and
+[`media/README.md`](media/README.md) for links and licensing notes. The
+source pack states no explicit license, and the images include Nintendo
+copyrighted device artwork/game screenshots; they are included with
+attribution for this free fan project and are not covered by the GPL-2.0
+license of the MAME binary. Nintendo Game & Watch is a trademark of Nintendo;
+this project is not affiliated with Nintendo.
 
 ## Caveats
 

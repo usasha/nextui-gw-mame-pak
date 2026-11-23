@@ -5,12 +5,13 @@
 # A .pakz is a zip containing a full SD-card slice:
 #
 #   Emus/tg5040/GW_MAME.pak/             the pak (assemble.sh)
-#   Roms/Game & Watch MAME (GW_MAME)/    empty ROM folder entry so the system
-#                                        appears in NextUI right after install
-#   Roms/.../.artwork/                    empty hidden artwork folder (created
-#                                        so users just drop artwork zips in;
-#                                        dot-prefixed => invisible in the
-#                                        NextUI game list)
+#   Roms/Game & Watch MAME (GW_MAME)/    ROM folder entry so the system appears
+#                                        in NextUI right after install
+#   Roms/.../map.txt                      display-name aliases (gnw_*.zip)
+#   Roms/.../.media/                      bundled NextUI menu covers (56 PNGs)
+#   Roms/.../.artwork/                    empty hidden folder for the MAME
+#                                        case-artwork zips users add themselves
+#                                        (dot-prefixed => invisible in NextUI)
 #
 # The zip is deterministic: fixed member order and timestamps
 # (SOURCE_DATE_EPOCH, default 2000-01-01), unix exec bits preserved. Reziping
@@ -43,6 +44,20 @@ log "Staging SD-card slice..."
 mkdir -p "${STAGE}/Emus/${PLATFORM}" "${STAGE}/Roms/${ROM_FOLDER}"
 cp -R "${OUT_DIR}/${PAK_TAG}.pak" "${STAGE}/Emus/${PLATFORM}/"
 
+if ls "${REPO_ROOT}"/media/*.png >/dev/null 2>&1; then
+    log "Staging bundled menu artwork..."
+    mkdir -p "${STAGE}/Roms/${ROM_FOLDER}/.media"
+    cp "${REPO_ROOT}"/media/*.png "${STAGE}/Roms/${ROM_FOLDER}/.media/"
+else
+    log "No menu artwork in media/ — packaging without .media"
+fi
+
+if [ -f "${REPO_ROOT}/roms/map.txt" ]; then
+    cp "${REPO_ROOT}/roms/map.txt" "${STAGE}/Roms/${ROM_FOLDER}/map.txt"
+else
+    log "No roms/map.txt — packaging without display-name aliases"
+fi
+
 # --- Deterministic zip -----------------------------------------------------------
 log "Building ${ZIP_PATH}..."
 rm -rf "${DIST_DIR}"
@@ -61,10 +76,11 @@ epoch = int(os.environ.get("SOURCE_DATE_EPOCH", "946684800"))
 dt = time.gmtime(epoch)[:6]
 
 entries = []
-pak_root = os.path.join(stage, pak_rel)
-for root, dirs, files in os.walk(pak_root):
+for root, dirs, files in os.walk(stage):
     dirs.sort()
     for name in sorted(files):
+        if name == ".DS_Store" or name.startswith("._"):
+            continue
         p = os.path.join(root, name)
         entries.append((p, os.path.relpath(p, stage)))
 
@@ -82,6 +98,10 @@ with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED, compresslevel=6) as zf
     zf.writestr(zi, b"")
     # empty hidden artwork folder inside the ROM folder (same dir entry)
     zi = zipfile.ZipInfo(rom_rel + "/.artwork/", date_time=dt)
+    zi.external_attr = (0o755 << 16) | 0x10
+    zf.writestr(zi, b"")
+    # hidden menu-art folder entry (PNGs, if any, were added above)
+    zi = zipfile.ZipInfo(rom_rel + "/.media/", date_time=dt)
     zi.external_attr = (0o755 << 16) | 0x10
     zf.writestr(zi, b"")
 EOF

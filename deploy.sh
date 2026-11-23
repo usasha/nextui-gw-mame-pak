@@ -10,6 +10,8 @@
 #   Roms/Game & Watch MAME (GW_MAME)/    ROM folder (created so the system
 #                                        shows up in NextUI — copy your MAME
 #                                        romset zips there)
+#   Roms/.../.media/                     bundled NextUI menu covers (media/)
+#   Roms/.../map.txt                     display-name aliases (roms/map.txt)
 #   Roms/.../.artwork/                   case artwork zips (required by the
 #                                        emulator; artwork/*.zip if present)
 #
@@ -30,6 +32,8 @@ REPO_ROOT="$(cd "$(dirname "$0")" && pwd)"
 OUT_DIR="${REPO_ROOT}/out"
 PAK_DIR="${OUT_DIR}/${PAK_TAG}.pak"
 ARTWORK_SRC="${REPO_ROOT}/artwork"
+MEDIA_SRC="${REPO_ROOT}/media"
+MAP_SRC="${REPO_ROOT}/roms/map.txt"
 
 # Device paths
 DEVICE_SDCARD="/mnt/SDCARD"
@@ -37,6 +41,7 @@ DEVICE_EMUS="${DEVICE_SDCARD}/Emus/${PLATFORM}"
 DEVICE_PAK="${DEVICE_EMUS}/${PAK_TAG}.pak"
 DEVICE_ROMS="${DEVICE_SDCARD}/Roms/${ROM_FOLDER}"
 DEVICE_ARTWORK="${DEVICE_ROMS}/.artwork"
+DEVICE_MEDIA="${DEVICE_ROMS}/.media"
 
 # Device SSH is slow (dropbear) — generous connect timeout
 SSH_OPTS="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=40"
@@ -80,9 +85,29 @@ else
     log "matching artwork per game; add them before release)"
 fi
 
+# --- Bundled NextUI menu artwork + display-name aliases ------------------------------
+if ls "${MEDIA_SRC}"/*.png > /dev/null 2>&1; then
+    log "Uploading menu artwork to ${DEVICE_MEDIA}..."
+    ${SSH} "rm -rf '${DEVICE_MEDIA}' && mkdir -p '${DEVICE_MEDIA}'"
+    tar --exclude='._*' --exclude='.DS_Store' --exclude='README.md' \
+        -C "${MEDIA_SRC}" -cf - . \
+        | ${SSH} "tar -C '${DEVICE_MEDIA}' -xf -"
+else
+    log "No menu artwork in media/ — skipping"
+fi
+
+if [ -f "${MAP_SRC}" ]; then
+    log "Uploading display-name map to ${DEVICE_ROMS}/map.txt..."
+    ${SSH} "mkdir -p '${DEVICE_ROMS}'"
+    tar -C "${REPO_ROOT}/roms" -cf - map.txt \
+        | ${SSH} "tar -C '${DEVICE_ROMS}' -xf -"
+else
+    log "No roms/map.txt — skipping"
+fi
+
 # --- Verify ------------------------------------------------------------------------
 log "Verifying..."
-${SSH} "ls -lh '${DEVICE_PAK}/' '${DEVICE_PAK}/lib/' && echo '--- roms:' && ls '${DEVICE_ROMS}/'"
+${SSH} "ls -lh '${DEVICE_PAK}/' '${DEVICE_PAK}/lib/' && echo '--- roms:' && ls '${DEVICE_ROMS}/' && echo '--- media count:' && ls '${DEVICE_ROMS}/.media' | wc -l && echo '--- map sample:' && head -5 '${DEVICE_ROMS}/map.txt'"
 log ""
 log "Done. On the device: put romset zips (e.g. gnw_ball.zip) in"
 log "  ${DEVICE_ROMS}/"
