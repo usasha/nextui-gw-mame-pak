@@ -1,0 +1,56 @@
+gnw_ball.zip	Ball
+gnw_flagman.zip	Flagman
+gnw_vermin.zip	Vermin
+gnw_fires.zip	Fire (Silver)
+gnw_judge.zip	Judge (Green)
+gnw_manholeg.zip	Manhole (Gold)
+gnw_helmet.zip	Helmet (CN-17)
+gnw_lion.zip	Lion
+gnw_pchute.zip	Parachute
+gnw_octopus.zip	Octopus
+gnw_popeye.zip	Popeye (Wide Screen)
+gnw_chef.zip	Chef
+gnw_mmouse.zip	Mickey Mouse (Wide Screen)
+gnw_egg.zip	Egg
+gnw_fire.zip	Fire (Wide Screen)
+gnw_tbridge.zip	Turtle Bridge
+gnw_fireatk.zip	Fire Attack
+gnw_stennis.zip	Snoopy Tennis
+gnw_opanic.zip	Oil Panic
+gnw_dkong.zip	Donkey Kong
+gnw_mickdon.zip	Mickey & Donald
+gnw_ghouse.zip	Green House
+gnw_dkong2.zip	Donkey Kong II
+gnw_mario.zip	Mario Bros.
+gnw_rshower.zip	Rain Shower
+gnw_lboat.zip	Life Boat
+gnw_pinball.zip	Pinball
+gnw_bjack.zip	Black Jack
+gnw_squish.zip	Squish
+gnw_bsweep.zip	Bomb Sweeper
+gnw_sbuster.zip	Safe Buster
+gnw_gcliff.zip	Gold Cliff
+gnw_zelda.zip	Zelda
+gnw_dkjr.zip	Donkey Kong Jr. (New Wide Screen)
+gnw_mariocm.zip	Mario's Cement Factory (New Wide Screen)
+gnw_manhole.zip	Manhole (New Wide Screen)
+gnw_tfish.zip	Tropical Fish
+gnw_smb.zip	Super Mario Bros. (Crystal Screen)
+gnw_smbn.zip	Super Mario Bros. (New Wide Screen)
+gnw_climber.zip	Climber (Crystal Screen)
+gnw_climbern.zip	Climber (New Wide Screen)
+gnw_bfight.zip	Balloon Fight (Crystal Screen)
+gnw_bfightn.zip	Balloon Fight (New Wide Screen)
+gnw_mariotj.zip	Mario the Juggler
+gnw_mariocmt.zip	Mario's Cement Factory (Table Top)
+gnw_snoopyp.zip	Snoopy (Panorama Screen)
+gnw_popeyep.zip	Popeye (Panorama Screen)
+gnw_dkjrp.zip	Donkey Kong Jr. (Panorama Screen)
+gnw_mbaway.zip	Mario's Bombs Away
+gnw_mmousep.zip	Mickey Mouse (Panorama Screen)
+gnw_dkcirc.zip	Donkey Kong Circus
+gnw_ssparky.zip	Spitball Sparky
+gnw_cgrab.zip	Crab Grab
+gnw_boxing.zip	Boxing
+gnw_dkong3.zip	Donkey Kong 3
+gnw_dkhockey.zip	Donkey Kong Hockey
